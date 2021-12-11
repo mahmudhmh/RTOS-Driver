@@ -1,0 +1,391 @@
+
+RTOS.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000021c  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000290  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000011  00800060  00800060  00000290  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000290  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000002c0  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000070  00000000  00000000  000002fc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   00000838  00000000  00000000  0000036c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 00000697  00000000  00000000  00000ba4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   000003aa  00000000  00000000  0000123b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000100  00000000  00000000  000015e8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    000003b1  00000000  00000000  000016e8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    0000015d  00000000  00000000  00001a99  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000050  00000000  00000000  00001bf6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 c9 00 	jmp	0x192	; 0x192 <__vector_11>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	20 e0       	ldi	r18, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	a1 37       	cpi	r26, 0x71	; 113
+  6c:	b2 07       	cpc	r27, r18
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 4c 00 	call	0x98	; 0x98 <main>
+  74:	0c 94 0c 01 	jmp	0x218	; 0x218 <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <LED1>:
+#include "Bitwise.h"
+
+void	LED1	(void)
+{
+	//// Toggle LED C7
+	PORTC ^= (1<<7);  	//1000 0000
+  7c:	85 b3       	in	r24, 0x15	; 21
+  7e:	80 58       	subi	r24, 0x80	; 128
+  80:	85 bb       	out	0x15, r24	; 21
+  82:	08 95       	ret
+
+00000084 <LED2>:
+}
+void	LED2	(void)
+{
+	//// Toggle LED C2
+	PORTC ^= (1<<2);  	//0000 0100
+  84:	95 b3       	in	r25, 0x15	; 21
+  86:	84 e0       	ldi	r24, 0x04	; 4
+  88:	89 27       	eor	r24, r25
+  8a:	85 bb       	out	0x15, r24	; 21
+  8c:	08 95       	ret
+
+0000008e <LED3>:
+}
+void	LED3	(void)
+{
+	//// Toggle LED D3
+	PORTD ^= (1<<3);  //1000 1000
+  8e:	92 b3       	in	r25, 0x12	; 18
+  90:	88 e0       	ldi	r24, 0x08	; 8
+  92:	89 27       	eor	r24, r25
+  94:	82 bb       	out	0x12, r24	; 18
+  96:	08 95       	ret
+
+00000098 <main>:
+	
+
+	/*	Initialization part						*/
+	/*	PC7 ,PC2 and PD3 are Output Pins		*/
+	
+	DDRC = 0xFF; // DDRC |= 0b10000100;
+  98:	8f ef       	ldi	r24, 0xFF	; 255
+  9a:	84 bb       	out	0x14, r24	; 20
+	DDRD = 0xFF; // DDRD |= 0b00001000;
+  9c:	81 bb       	out	0x11, r24	; 17
+	
+	Scheduler_voidInit();
+  9e:	0e 94 ac 00 	call	0x158	; 0x158 <Scheduler_voidInit>
+	
+	Scheduler_voidCreateTask(0,1000,LED1,0);		//	1 Sec
+  a2:	20 e0       	ldi	r18, 0x00	; 0
+  a4:	4e e3       	ldi	r20, 0x3E	; 62
+  a6:	50 e0       	ldi	r21, 0x00	; 0
+  a8:	68 ee       	ldi	r22, 0xE8	; 232
+  aa:	73 e0       	ldi	r23, 0x03	; 3
+  ac:	80 e0       	ldi	r24, 0x00	; 0
+  ae:	0e 94 b6 00 	call	0x16c	; 0x16c <Scheduler_voidCreateTask>
+	Scheduler_voidCreateTask(1,2000,LED2,1);		//	2 Sec
+  b2:	21 e0       	ldi	r18, 0x01	; 1
+  b4:	42 e4       	ldi	r20, 0x42	; 66
+  b6:	50 e0       	ldi	r21, 0x00	; 0
+  b8:	60 ed       	ldi	r22, 0xD0	; 208
+  ba:	77 e0       	ldi	r23, 0x07	; 7
+  bc:	81 e0       	ldi	r24, 0x01	; 1
+  be:	0e 94 b6 00 	call	0x16c	; 0x16c <Scheduler_voidCreateTask>
+	Scheduler_voidCreateTask(2,3000,LED3,2);		//	3 Sec
+  c2:	22 e0       	ldi	r18, 0x02	; 2
+  c4:	47 e4       	ldi	r20, 0x47	; 71
+  c6:	50 e0       	ldi	r21, 0x00	; 0
+  c8:	68 eb       	ldi	r22, 0xB8	; 184
+  ca:	7b e0       	ldi	r23, 0x0B	; 11
+  cc:	82 e0       	ldi	r24, 0x02	; 2
+  ce:	0e 94 b6 00 	call	0x16c	; 0x16c <Scheduler_voidCreateTask>
+  d2:	ff cf       	rjmp	.-2      	; 0xd2 <main+0x3a>
+
+000000d4 <Scheduler_voidStartOS>:
+	}
+	
+}
+
+static void Scheduler_voidStartOS(void)
+{
+  d4:	0f 93       	push	r16
+  d6:	1f 93       	push	r17
+  d8:	cf 93       	push	r28
+	/*	Order and execut all Ready Tasks ( as Periodicity )	*/
+	for(uint8 i = 0 ; i < NUMBER_OF_TASKS ; i++)
+  da:	c0 e0       	ldi	r28, 0x00	; 0
+  dc:	37 c0       	rjmp	.+110    	; 0x14c <Scheduler_voidStartOS+0x78>
+	{
+		if(Scheduler_Ticks>= Arr_Tasks[i].firstdelay){
+  de:	0c 2f       	mov	r16, r28
+  e0:	10 e0       	ldi	r17, 0x00	; 0
+  e2:	f8 01       	movw	r30, r16
+  e4:	ee 0f       	add	r30, r30
+  e6:	ff 1f       	adc	r31, r31
+  e8:	ee 0f       	add	r30, r30
+  ea:	ff 1f       	adc	r31, r31
+  ec:	e0 0f       	add	r30, r16
+  ee:	f1 1f       	adc	r31, r17
+  f0:	ee 59       	subi	r30, 0x9E	; 158
+  f2:	ff 4f       	sbci	r31, 0xFF	; 255
+  f4:	20 81       	ld	r18, Z
+  f6:	30 e0       	ldi	r19, 0x00	; 0
+  f8:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__DATA_REGION_ORIGIN__>
+  fc:	90 91 61 00 	lds	r25, 0x0061	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
+ 100:	82 17       	cp	r24, r18
+ 102:	93 07       	cpc	r25, r19
+ 104:	10 f1       	brcs	.+68     	; 0x14a <Scheduler_voidStartOS+0x76>
+			if(((Scheduler_Ticks % Arr_Tasks[i].u16Periodicity) -Arr_Tasks[i].firstdelay)== 0)
+ 106:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__DATA_REGION_ORIGIN__>
+ 10a:	90 91 61 00 	lds	r25, 0x0061	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
+ 10e:	f8 01       	movw	r30, r16
+ 110:	ee 0f       	add	r30, r30
+ 112:	ff 1f       	adc	r31, r31
+ 114:	ee 0f       	add	r30, r30
+ 116:	ff 1f       	adc	r31, r31
+ 118:	e0 0f       	add	r30, r16
+ 11a:	f1 1f       	adc	r31, r17
+ 11c:	ee 59       	subi	r30, 0x9E	; 158
+ 11e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 120:	61 81       	ldd	r22, Z+1	; 0x01
+ 122:	72 81       	ldd	r23, Z+2	; 0x02
+ 124:	0e 94 f8 00 	call	0x1f0	; 0x1f0 <__udivmodhi4>
+ 128:	28 17       	cp	r18, r24
+ 12a:	39 07       	cpc	r19, r25
+ 12c:	71 f4       	brne	.+28     	; 0x14a <Scheduler_voidStartOS+0x76>
+			{
+				Arr_Tasks[i].PfTask();
+ 12e:	f8 01       	movw	r30, r16
+ 130:	ee 0f       	add	r30, r30
+ 132:	ff 1f       	adc	r31, r31
+ 134:	ee 0f       	add	r30, r30
+ 136:	ff 1f       	adc	r31, r31
+ 138:	0e 0f       	add	r16, r30
+ 13a:	1f 1f       	adc	r17, r31
+ 13c:	f8 01       	movw	r30, r16
+ 13e:	ee 59       	subi	r30, 0x9E	; 158
+ 140:	ff 4f       	sbci	r31, 0xFF	; 255
+ 142:	03 80       	ldd	r0, Z+3	; 0x03
+ 144:	f4 81       	ldd	r31, Z+4	; 0x04
+ 146:	e0 2d       	mov	r30, r0
+ 148:	09 95       	icall
+}
+
+static void Scheduler_voidStartOS(void)
+{
+	/*	Order and execut all Ready Tasks ( as Periodicity )	*/
+	for(uint8 i = 0 ; i < NUMBER_OF_TASKS ; i++)
+ 14a:	cf 5f       	subi	r28, 0xFF	; 255
+ 14c:	c3 30       	cpi	r28, 0x03	; 3
+ 14e:	38 f2       	brcs	.-114    	; 0xde <Scheduler_voidStartOS+0xa>
+			{
+				Arr_Tasks[i].PfTask();
+			}
+		}
+	}
+}
+ 150:	cf 91       	pop	r28
+ 152:	1f 91       	pop	r17
+ 154:	0f 91       	pop	r16
+ 156:	08 95       	ret
+
+00000158 <Scheduler_voidInit>:
+void	Scheduler_voidInit(void)
+{
+	/*	Tick time = 1 msec									*/
+	
+	/*	F_CPU		16 MHz									*/
+	TCNT0 = 240;
+ 158:	80 ef       	ldi	r24, 0xF0	; 240
+ 15a:	82 bf       	out	0x32, r24	; 50
+	/*	Pre scaller = 1024 and Normal Mode (OverFlow Mode)	*/
+	TCCR0 = 0x05;
+ 15c:	85 e0       	ldi	r24, 0x05	; 5
+ 15e:	83 bf       	out	0x33, r24	; 51
+	/*	Enable Timer OverFlow Mode Interrupt				*/
+	TIMSK = 0x01;
+ 160:	81 e0       	ldi	r24, 0x01	; 1
+ 162:	89 bf       	out	0x39, r24	; 57
+	/*	Enable Global Interrupt								*/
+	SetBit(SREG,7);
+ 164:	8f b7       	in	r24, 0x3f	; 63
+ 166:	80 68       	ori	r24, 0x80	; 128
+ 168:	8f bf       	out	0x3f, r24	; 63
+ 16a:	08 95       	ret
+
+0000016c <Scheduler_voidCreateTask>:
+	
+}
+void	Scheduler_voidCreateTask(uint8 Copy_u8Priority ,uint16 Copy_u16Periodicity , void (*pf) (void) , uint8 First)
+{
+	/*	Range Check											*/
+	if(Copy_u8Priority < NUMBER_OF_TASKS)
+ 16c:	83 30       	cpi	r24, 0x03	; 3
+ 16e:	80 f4       	brcc	.+32     	; 0x190 <Scheduler_voidCreateTask+0x24>
+	{
+		Arr_Tasks[Copy_u8Priority].u16Periodicity = Copy_u16Periodicity;
+ 170:	90 e0       	ldi	r25, 0x00	; 0
+ 172:	fc 01       	movw	r30, r24
+ 174:	ee 0f       	add	r30, r30
+ 176:	ff 1f       	adc	r31, r31
+ 178:	ee 0f       	add	r30, r30
+ 17a:	ff 1f       	adc	r31, r31
+ 17c:	8e 0f       	add	r24, r30
+ 17e:	9f 1f       	adc	r25, r31
+ 180:	fc 01       	movw	r30, r24
+ 182:	ee 59       	subi	r30, 0x9E	; 158
+ 184:	ff 4f       	sbci	r31, 0xFF	; 255
+ 186:	72 83       	std	Z+2, r23	; 0x02
+ 188:	61 83       	std	Z+1, r22	; 0x01
+		Arr_Tasks[Copy_u8Priority].PfTask = pf;
+ 18a:	54 83       	std	Z+4, r21	; 0x04
+ 18c:	43 83       	std	Z+3, r20	; 0x03
+		Arr_Tasks[Copy_u8Priority].firstdelay = First;
+ 18e:	20 83       	st	Z, r18
+ 190:	08 95       	ret
+
+00000192 <__vector_11>:
+		}
+	}
+}
+
+ISR(TIMER0_OVF_vect)
+{
+ 192:	1f 92       	push	r1
+ 194:	0f 92       	push	r0
+ 196:	0f b6       	in	r0, 0x3f	; 63
+ 198:	0f 92       	push	r0
+ 19a:	11 24       	eor	r1, r1
+ 19c:	2f 93       	push	r18
+ 19e:	3f 93       	push	r19
+ 1a0:	4f 93       	push	r20
+ 1a2:	5f 93       	push	r21
+ 1a4:	6f 93       	push	r22
+ 1a6:	7f 93       	push	r23
+ 1a8:	8f 93       	push	r24
+ 1aa:	9f 93       	push	r25
+ 1ac:	af 93       	push	r26
+ 1ae:	bf 93       	push	r27
+ 1b0:	ef 93       	push	r30
+ 1b2:	ff 93       	push	r31
+	/*	PreLoad												*/
+	TCNT0 = 240;
+ 1b4:	80 ef       	ldi	r24, 0xF0	; 240
+ 1b6:	82 bf       	out	0x32, r24	; 50
+	/*	Call Scheduler = 1 msec	(Scheduler Tick time)		*/
+	Scheduler_voidStartOS();
+ 1b8:	0e 94 6a 00 	call	0xd4	; 0xd4 <Scheduler_voidStartOS>
+	/*	Number of Ticks										*/
+	Scheduler_Ticks++;
+ 1bc:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__DATA_REGION_ORIGIN__>
+ 1c0:	90 91 61 00 	lds	r25, 0x0061	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
+ 1c4:	01 96       	adiw	r24, 0x01	; 1
+ 1c6:	90 93 61 00 	sts	0x0061, r25	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
+ 1ca:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__DATA_REGION_ORIGIN__>
+ 1ce:	ff 91       	pop	r31
+ 1d0:	ef 91       	pop	r30
+ 1d2:	bf 91       	pop	r27
+ 1d4:	af 91       	pop	r26
+ 1d6:	9f 91       	pop	r25
+ 1d8:	8f 91       	pop	r24
+ 1da:	7f 91       	pop	r23
+ 1dc:	6f 91       	pop	r22
+ 1de:	5f 91       	pop	r21
+ 1e0:	4f 91       	pop	r20
+ 1e2:	3f 91       	pop	r19
+ 1e4:	2f 91       	pop	r18
+ 1e6:	0f 90       	pop	r0
+ 1e8:	0f be       	out	0x3f, r0	; 63
+ 1ea:	0f 90       	pop	r0
+ 1ec:	1f 90       	pop	r1
+ 1ee:	18 95       	reti
+
+000001f0 <__udivmodhi4>:
+ 1f0:	aa 1b       	sub	r26, r26
+ 1f2:	bb 1b       	sub	r27, r27
+ 1f4:	51 e1       	ldi	r21, 0x11	; 17
+ 1f6:	07 c0       	rjmp	.+14     	; 0x206 <__udivmodhi4_ep>
+
+000001f8 <__udivmodhi4_loop>:
+ 1f8:	aa 1f       	adc	r26, r26
+ 1fa:	bb 1f       	adc	r27, r27
+ 1fc:	a6 17       	cp	r26, r22
+ 1fe:	b7 07       	cpc	r27, r23
+ 200:	10 f0       	brcs	.+4      	; 0x206 <__udivmodhi4_ep>
+ 202:	a6 1b       	sub	r26, r22
+ 204:	b7 0b       	sbc	r27, r23
+
+00000206 <__udivmodhi4_ep>:
+ 206:	88 1f       	adc	r24, r24
+ 208:	99 1f       	adc	r25, r25
+ 20a:	5a 95       	dec	r21
+ 20c:	a9 f7       	brne	.-22     	; 0x1f8 <__udivmodhi4_loop>
+ 20e:	80 95       	com	r24
+ 210:	90 95       	com	r25
+ 212:	bc 01       	movw	r22, r24
+ 214:	cd 01       	movw	r24, r26
+ 216:	08 95       	ret
+
+00000218 <_exit>:
+ 218:	f8 94       	cli
+
+0000021a <__stop_program>:
+ 21a:	ff cf       	rjmp	.-2      	; 0x21a <__stop_program>
